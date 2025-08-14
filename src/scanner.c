@@ -64,6 +64,15 @@ typedef struct
     size_t brace_nesting[];
 } serialized_state_t;
 
+static const char *
+ts_strchr(const char *s, int ch)
+{
+    for (const char *p = s; *p; p++)
+        if (*p == (char)ch)
+            return p;
+    return NULL;
+}
+
 static bool
 check_char(TSLexer *lexer, int expected)
 {
@@ -80,7 +89,7 @@ check_chars(TSLexer *lexer, const char *expected)
 {
     int ch = lexer->lookahead;
 
-    if (!strchr(expected, ch))
+    if (!ts_strchr(expected, ch))
         return 0;
 
     lexer->advance(lexer, false);
