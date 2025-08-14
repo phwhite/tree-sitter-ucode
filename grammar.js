@@ -52,7 +52,10 @@ module.exports = grammar({
 
   rules: {
     // ===== Program =====
-    program: $ => repeat($._statement),
+    program: $ => seq(
+      optional($.hash_bang_line),
+      repeat($._statement)
+    ),
 
     // ===== Comments =====
     // line: //...
@@ -64,6 +67,7 @@ module.exports = grammar({
 
     // ===== Statements & Declarations =====
     _statement: $ => choice(
+      $.import_statement,
       $._declaration,
       $.if_statement,
       $.while_statement,
@@ -257,8 +261,42 @@ module.exports = grammar({
 
     parenthesized_expression: $ => seq('(', $._expression, ')'),
 
+    hash_bang_line: $ => token(seq('#!', /.*/)),
+
+    import_statement: $ => prec.left(1, seq(
+      'import',
+      choice(
+        field('source', $.string), // import 'mod'
+        seq(field('clause', $.import_clause), 'from', field('source', $.string))
+      )
+    )),
+
+    import_clause: $ => choice(
+      field('default', $.identifier),
+      $.import_namespace,
+      $.import_named
+    ),
+
+    import_namespace: $ => seq('*', 'as', field('name', $.identifier)),
+
+    import_named: $ => seq(
+      '{', commaSep1($.import_specifier), optional(','), '}'
+    ),
+
+    import_specifier: $ => seq(
+      field('name', $.identifier),
+      optional(seq('as', field('alias', $.identifier)))
+    ),
+
     // ===== Literals =====
-    literal: $ => choice($.number, $.string, $.true, $.false, $.null),
+    literal: $ => choice(
+        $.number,
+        $.string,
+        $.true,
+        $.false,
+        $.null,
+        $.template_string,
+    ),
 
     number: _ => token(choice(
       /-?\d+\.\d+([eE][+-]?\d+)?/,
@@ -266,41 +304,35 @@ module.exports = grammar({
     )),
 
     string: $ => choice(
-      seq('"', repeat(choice(/[^"\\]/, /\\./)), '"'),
-      seq("'", repeat(choice(/[^'\\]/, /\\./)), "'"),
-      $.template_string
+      seq('"', repeat(choice($.escape_sequence, token.immediate(/[^"\\]+/))), '"'),
+      seq("'", repeat(choice($.escape_sequence, token.immediate(/[^'\\]+/))), "'"),
     ),
 
     true:  _ => 'true',
     false: _ => 'false',
     null:  _ => 'null',
 
-    // ===== Template literals (flattened; no look-ahead) =====
-    template_string: $ => seq('`', repeat($.template_content), '`'),
-
-    template_content: $ => choice(
-      // Prefer substitution when a '$' starts it
-      prec(2, $.template_substitution),
-      $.template_text,
-      $.template_escape,
-      // Lone '$' that doesn't start a substitution
-      prec(1, $.template_dollar)
+    template_string: $ => seq(
+      '`',
+      repeat(choice(
+        $.template_substitution,
+        $.escape_sequence,
+        // raw chunk (stop on backtick, $, or \)
+        token.immediate(/[^`$\\]+/),
+        // plain '$' that does NOT start a substitution (no look‑ahead needed)
+        token.immediate(/\$/)
+      )),
+      '`'
     ),
 
     template_substitution: $ => seq(
-      '$', '{',
-      $._expression,
-      '}'
+      alias(token.immediate('${'), 'interpolation_start'),
+      $._expression,               // or whatever your expression rule is named
+      alias('}', 'interpolation_end')
     ),
 
-    // Runs of normal characters (no backtick, $, or backslash)
-    template_text: _ => token(/[^`$\\]+/),
+    escape_sequence: _ => token.immediate(/\\./),
 
-    // Backslash escape of a single char (including newline)
-    template_escape: $ => seq('\\', token(/(.|\n)/)),
-
-    // A literal '$' (handled separately to avoid look-ahead)
-    template_dollar: _ => token('$'),
 
     // ===== Arrays & Objects =====
     array: $ => seq(
