@@ -360,26 +360,6 @@ export { "string import" as "string export" } from 'foo';
       (string_fragment))))
 
 ============================================
-Decorators before exports
-============================================
-
-@injectable()
-export class Foo {
-}
-
----
-
-(program
-  (export_statement
-    decorator: (decorator
-      (call_expression
-        function: (identifier)
-        arguments: (arguments)))
-    declaration: (class_declaration
-      name: (identifier)
-      body: (class_body))))
-
-============================================
 If statements
 ============================================
 
@@ -490,7 +470,7 @@ for (var i = 0
 
 for (let in {});
 
-for (let j 
+for (let j
   of k);
 
 ---
@@ -709,26 +689,6 @@ for (let {a, b} of items || [])
           (identifier))))))
 
 ============================================
-For-await-of statements
-============================================
-
-for await (const chunk of stream) {
-  str += chunk;
-}
-
----
-
-(program
-  (for_in_statement
-    (identifier)
-    (identifier)
-    (statement_block
-      (expression_statement
-        (augmented_assignment_expression
-          (identifier)
-          (identifier))))))
-
-============================================
 While statements
 ============================================
 
@@ -870,71 +830,6 @@ var x, y = {}, z;
       (identifier))))
 
 ============================================
-Using declarations
-============================================
-
-using file = getFile();
-await using resource = getResource();
-using x = a, y = b;
-
----
-
-(program
-  (using_declaration
-    (variable_declarator
-      (identifier)
-      (call_expression
-        (identifier)
-        (arguments))))
-  (using_declaration
-    (variable_declarator
-      (identifier)
-      (call_expression
-        (identifier)
-        (arguments))))
-  (using_declaration
-    (variable_declarator
-      (identifier)
-      (identifier))
-    (variable_declarator
-      (identifier)
-      (identifier))))
-
-============================================
-Using declarations in for loops
-============================================
-
-for (using item of items) {
-  process(item);
-}
-
-for await (await using resource of resources) {
-  consume(resource);
-}
-
----
-
-(program
-  (for_in_statement
-    (identifier)
-    (identifier)
-    (statement_block
-      (expression_statement
-        (call_expression
-          (identifier)
-          (arguments
-            (identifier))))))
-  (for_in_statement
-    (identifier)
-    (identifier)
-    (statement_block
-      (expression_statement
-        (call_expression
-          (identifier)
-          (arguments
-            (identifier)))))))
-
-============================================
 'of' as identifier in declarations
 ============================================
 
@@ -1060,68 +955,6 @@ let a /* >_< */ = 1
       (comment)
       (number))))
 
-============================================
-Comments with asterisks
-============================================
-
-/* a */
-const a = 1;
-
-/* b **/
-const b = 1;
-
-/* c ***/
-const c = 1;
-
-/* d
-
-***/
-const d = 1;
-
-class E {
-    f() {
-    } /*** com
-    ment ***/
-    g() {
-    }
-}
-
----
-
-(program
-  (comment)
-  (lexical_declaration
-    (variable_declarator
-      (identifier)
-      (number)))
-  (comment)
-  (lexical_declaration
-    (variable_declarator
-      (identifier)
-      (number)))
-  (comment)
-  (lexical_declaration
-    (variable_declarator
-      (identifier)
-      (number)))
-  (comment)
-  (lexical_declaration
-    (variable_declarator
-      (identifier)
-      (number)))
-  (class_declaration
-    (identifier)
-    (class_body
-      (method_definition
-        (property_identifier)
-        (formal_parameters)
-        (statement_block))
-      (comment)
-      (method_definition
-        (property_identifier)
-        (formal_parameters)
-        (statement_block)))))
-
 ==========================================
 Comments within expressions
 ==========================================
@@ -1215,22 +1048,6 @@ switch (x) {
       (switch_default
         (return_statement
           (number))))))
-
-============================================
-Throw statements
-============================================
-
-throw new Error("uh oh");
-
----
-
-(program
-  (throw_statement
-    (new_expression
-      (identifier)
-      (arguments
-        (string
-          (string_fragment))))))
 
 ============================================
 Throw statements with sequence expressions

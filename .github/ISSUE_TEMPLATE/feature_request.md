@@ -8,6 +8,6 @@ assignees: ''
 ---
 
 <!--
-     The tree-sitter-javascript project is a JavaScript and JSX parser only.
+     The tree-sitter-ucode project is a ucode parser only.
      How can we improve it?
 -->

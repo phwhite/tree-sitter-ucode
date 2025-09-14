@@ -1,4 +1,4 @@
-module github.com/tree-sitter/tree-sitter-javascript
+module github.com/phwhite/tree-sitter-ucode
 
 go 1.22
 

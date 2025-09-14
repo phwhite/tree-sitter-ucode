@@ -1,4 +1,4 @@
-"""JavaScript grammar for tree-sitter"""
+"""ucode grammar for tree-sitter"""
 
 from importlib.resources import files as _files
 

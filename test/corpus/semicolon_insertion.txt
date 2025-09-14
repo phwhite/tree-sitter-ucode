@@ -108,47 +108,6 @@ a
   (expression_statement (unary_expression (identifier)))
   (comment))
 
-================================================
-Alphabetical infix operators split across lines
-================================================
-
-a
-  i;
-
-a
-  in b;
-
-a
-  ins;
-
-a
-  inst;
-
-a
-  instanceof b;
-
-a
-  instanceofX;
-
----
-
-(program
-  (expression_statement (identifier))
-  (expression_statement (identifier))
-
-  (expression_statement (binary_expression (identifier) (identifier)))
-
-  (expression_statement (identifier))
-  (expression_statement (identifier))
-
-  (expression_statement (identifier))
-  (expression_statement (identifier))
-
-  (expression_statement (binary_expression (identifier) (identifier)))
-
-  (expression_statement (identifier))
-  (expression_statement (identifier)))
-
 ===========================================
 Single-line if/else statements
 ===========================================
@@ -177,31 +136,6 @@ function c() {return d}
     (expression_statement (identifier))))
   (function_declaration (identifier) (formal_parameters) (statement_block
     (return_statement (identifier)))))
-
-==============================================
-Multi-line chained expressions in var declarations
-==============================================
-
-var a = new A()
-  .b({c: 'd'})
-  .e()
-
----
-
-(program
-  (variable_declaration (variable_declarator
-    (identifier)
-    (call_expression
-      (member_expression
-        (call_expression
-          (member_expression
-            (new_expression (identifier) (arguments))
-            (property_identifier))
-          (arguments
-            (object
-              (pair (property_identifier) (string (string_fragment))))))
-        (property_identifier))
-      (arguments)))))
 
 ==============================================
 if/for/while/do statements without semicolons
@@ -244,66 +178,3 @@ if (p) { var q }
   (if_statement (parenthesized_expression (identifier)) (statement_block
     (variable_declaration (variable_declarator (identifier))))))
 
-=====================================================
-Single-line declarations without semicolons
-=====================================================
-
-function a () { function b () {} function *c () {} class D {} return }
----
-
-(program
-  (function_declaration (identifier) (formal_parameters) (statement_block
-    (function_declaration (identifier) (formal_parameters) (statement_block))
-    (generator_function_declaration (identifier) (formal_parameters) (statement_block))
-    (class_declaration (identifier) (class_body))
-    (return_statement))))
-
-=====================================================
-Comments after statements without semicolons
-=====================================================
-
-let a // comment at end of declaration
-
-// comment outside of declaration
-let b /* comment between declarators */, c
-
-/** comment with *stars* **/ /* comment with /slashes/ */
-/* third comment in a row */
-
-let d
-
-let e
-/* back to back *//* comments */
-
-class C {
-  method/*comment*/() {}
-}
-
-b
-/* interleaved non-semi-insertion */
-  .c
----
-
-(program
-  (lexical_declaration
-    (variable_declarator (identifier)))
-  (comment)
-  (comment)
-  (lexical_declaration
-    (variable_declarator (identifier))
-    (comment)
-    (variable_declarator (identifier)))
-  (comment)
-  (comment)
-  (comment)
-  (lexical_declaration (variable_declarator (identifier)))
-  (lexical_declaration (variable_declarator (identifier)))
-  (comment)
-  (comment)
-  (class_declaration (identifier) (class_body (method_definition
-    (property_identifier)
-    (comment)
-    (formal_parameters)
-    (statement_block))))
-  (expression_statement
-    (member_expression (identifier) (comment) (property_identifier))))

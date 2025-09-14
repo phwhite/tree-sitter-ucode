@@ -1,31 +1,24 @@
 {
   "grammars": [
     {
-      "name": "javascript",
-      "camelcase": "JavaScript",
-      "scope": "source.js",
+      "name": "ucode",
+      "camelcase": "Ucode",
+      "scope": "source.uc",
       "path": ".",
-      "file-types": [
-        "js",
-        "mjs",
-        "cjs",
-        "jsx"
-      ],
+      "file-types": ["uc", "ucode"],
       "highlights": [
         "queries/highlights.scm",
         "queries/highlights-jsx.scm",
         "queries/highlights-params.scm"
       ],
-      "tags": [
-        "queries/tags.scm"
-      ],
-      "injection-regex": "^(js|javascript)$"
+      "tags": ["queries/tags.scm"],
+      "injection-regex": "^(uc|ucode)$"
     }
   ],
   "metadata": {
-    "version": "0.25.0",
+    "version": "1.0.0",
     "license": "MIT",
-    "description": "JavaScript grammar for tree-sitter",
+    "description": "ucode grammar for tree-sitter",
     "authors": [
       {
         "name": "Max Brunsfeld",
@@ -34,10 +27,14 @@
       {
         "name": "Amaan Qureshi",
         "email": "amaanq12@gmail.com"
+      },
+      {
+        "name": "Paul White",
+        "email": "phwhite@gmail.com"
       }
     ],
     "links": {
-      "repository": "https://github.com/tree-sitter/tree-sitter-javascript"
+      "repository": "https://github.com/phwhite/tree-sitter-ucode"
     }
   },
   "bindings": {

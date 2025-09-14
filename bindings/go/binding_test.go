@@ -1,15 +1,15 @@
-package tree_sitter_javascript_test
+package tree_sitter_ucode_test
 
 import (
 	"testing"
 
 	tree_sitter "github.com/tree-sitter/go-tree-sitter"
-	tree_sitter_javascript "github.com/tree-sitter/tree-sitter-javascript/bindings/go"
+	tree_sitter_ucode "github.com/phwhite/tree-sitter-ucode/bindings/go"
 )
 
 func TestCanLoadGrammar(t *testing.T) {
-	language := tree_sitter.NewLanguage(tree_sitter_javascript.Language())
+	language := tree_sitter.NewLanguage(tree_sitter_ucode.Language())
 	if language == nil {
-		t.Errorf("Error loading JavaScript grammar")
+		t.Errorf("Error loading ucode grammar")
 	}
 }

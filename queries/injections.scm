@@ -12,10 +12,6 @@
   (#set! injection.include-children))
 
 
-; Parse regex syntax within regex literals
-
-((regex_pattern) @injection.content
- (#set! injection.language "regex"))
 
  ; Parse JSDoc annotations in comments
 

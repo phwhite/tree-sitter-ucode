@@ -50,5 +50,5 @@ jobs:
         uses: tree-sitter/parse-action@v4
         with:
           files: |
-            examples/*.js
-            examples/*.jsx
+            examples/*.uc
+            examples/*.ucode

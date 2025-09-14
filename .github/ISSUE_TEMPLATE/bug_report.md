@@ -9,12 +9,12 @@ assignees: ''
 
 The following piece of code is valid but it is parsed incorrectly:
 
-```javascript
+```ucode
 
 ```
 
-Here's a link to the TypeScript Playground showing that the snippet above is valid JavaScript or TypeScript:
-<!-- Please check your code at https://www.typescriptlang.org/play
+Here's a link to the ucode documentation showing that the snippet above is valid ucode:
+<!-- Please check your code at https://ucode.mein.io
      and paste the URL below. -->
 
 <!-- Please run `tree-sitter parse YOUR_FILE` and show us the output. -->

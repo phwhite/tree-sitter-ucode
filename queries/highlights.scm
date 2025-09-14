@@ -70,7 +70,6 @@
 ;---------
 
 (this) @variable.builtin
-(super) @variable.builtin
 
 [
   (true)
@@ -86,7 +85,6 @@
   (template_string)
 ] @string
 
-(regex) @string.special
 (number) @number
 
 ; Tokens
@@ -161,12 +159,9 @@
 
 [
   "as"
-  "async"
-  "await"
   "break"
   "case"
   "catch"
-  "class"
   "const"
   "continue"
   "debugger"
@@ -175,7 +170,6 @@
   "do"
   "else"
   "export"
-  "extends"
   "finally"
   "for"
   "from"
@@ -184,15 +178,12 @@
   "if"
   "import"
   "in"
-  "instanceof"
   "let"
-  "new"
   "of"
   "return"
   "set"
   "static"
   "switch"
-  "target"
   "throw"
   "try"
   "typeof"
@@ -200,5 +191,4 @@
   "void"
   "while"
   "with"
-  "yield"
 ] @keyword
